@@ -29,7 +29,6 @@ def agent_details():
     
 
 def contract_details():
-
     url = f'{API_BASE_URL}/my/contracts'
     headers = {
         'Authorization': f'Bearer {API_TOKEN}'
@@ -38,11 +37,14 @@ def contract_details():
     response = requests.get(url, headers=headers)
     data = response.json()
     for contract in data['data']:
+        contract_id = contract['id']
         contract_type = contract['type']
         deadline = contract['terms']['deadline']
         payment_on_fulfilled = contract['terms']['payment']['onFulfilled']
         deliveries = contract['terms']['deliver']
 
+        print()
+        print(f"Contract ID: {contract_id}")
         print(f"Contract Type: {contract_type}")
         print(f"Contract Deadline: {deadline}")
         print(f"Payment: {payment_on_fulfilled}")
@@ -60,8 +62,30 @@ def contract_details():
             print(f"Destination: {destination}")
             print(f"Units Required: {units_required}")
             print(f"Units Fulfilled: {units_fulfilled}")
+        
+    accept = input("Do you want to accept the contract? Press '1' to accept")
+
+    if accept == "1":
+        url = f'{API_BASE_URL}/my/contracts/{contract_id}/accept'
+        print(f"Contract {contract_id} accepted!")
+    else:
+        print("Fail")
 
     #print (response.json())
+
+# Waypoints + Ships
+
+def waypoints():
+    url = f'{API_BASE_URL}/my/status'
+    headers = {
+        'Authorization': f'Bearer {API_TOKEN}'
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    print(data)
+
+   
 
 
 def menu():
@@ -70,6 +94,7 @@ def menu():
     print("Menu")
     print("1. Agent Details")
     print("2. Contact Details")
+    print("3. Waypoints")
     print("0. To exit")
     print()
     choice = input("Enter an option: ")
@@ -79,6 +104,8 @@ def menu():
         print()
     elif choice == "2":
         contract_details()
+    elif choice == "3":
+        waypoints()
     elif choice == "0":
         print("Exiting...")
         
