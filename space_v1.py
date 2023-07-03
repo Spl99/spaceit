@@ -85,10 +85,11 @@ def waypoints():
     data = response.json()
     print(data)
 
-   
+ 
+def ship_status():
 
 
-def menu():
+ def menu():
     global choice
     print()
     print("Menu")
